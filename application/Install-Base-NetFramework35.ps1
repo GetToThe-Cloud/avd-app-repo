@@ -11,11 +11,11 @@ function Log-Message([String]$Message, [string]$file) {
 ### Tests ####
 If (!(Test-Path "C:\BuildImage\Log")) {
     Write-Host "[$(Get-Date -format "HH:mm:ss")] Folder does not exist"
-  new-item -type Directory -path "C:\BuildImage" -name Log
-  #    break
-  }
+    new-item -type Directory -path "C:\BuildImage" -name Log
+    #    break
+}
   
-  $logfile = "C:\buildImage\Log\Install-$($ApplicationName)-$(Get-Date -Format "ddMMyyyy").txt"
+$logfile = "C:\buildImage\Log\Install-$($ApplicationName)-$(Get-Date -Format "ddMMyyyy").txt"
 
 Log-Message -file $logfile -Message "-----------------------------------------------------------"
 Log-Message -file $logfile -Message "$($installDescription)"
@@ -31,12 +31,17 @@ If ((Get-WindowsCapability -Online -Name NetFx3).state -eq "NotPresent") {
 }
 If ((Get-WindowsCapability -Online -Name NetFx3).state -eq "NotPresent") {
     Log-message -file $logfile -Message ".NET Framework 3.5 still not present. Skipping ..."
+    Log-Message -file $logfile -Message "-----------------------------------------------------------"
+    Log-Message -file $logfile -Message "Failed installation of $($ApplicationName) with code: $($LastExitCode)"
+    Log-Message -file $logfile -Message "End Time: $(Get-Date)"
+    Log-Message -file $logfile -Message "-----------------------------------------------------------"
+    exit 1
 }
 else {
     Log-Message -file $Logfile -message ".NET Framework 3.5 is present."
+    Log-Message -file $logfile -Message "-----------------------------------------------------------"
+    Log-Message -file $logfile -Message "Finished installation of $($ApplicationName)"
+    Log-Message -file $logfile -Message "End Time: $(Get-Date)"
+    Log-Message -file $logfile -Message "-----------------------------------------------------------"
 }
 
-Log-Message -file $logfile -Message "-----------------------------------------------------------"
-Log-Message -file $logfile -Message "Finished installation of $($ApplicationName)"
-Log-Message -file $logfile -Message "End Time: $(Get-Date)"
-Log-Message -file $logfile -Message "-----------------------------------------------------------"

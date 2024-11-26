@@ -32,9 +32,25 @@ catch {
     $errormessage = $_
     Log-message -file $Logfile -Message "CloudKerberosTicketRetrievalEnabled could not be set"
     Log-Message -file $Logfile -Message "$($errormessage.Exception.Message)"
+    exit 1
 }
 
-Log-Message -file $logfile -Message "-----------------------------------------------------------"
-Log-Message -file $logfile -Message "Finished installation of $($ApplicationName)"
-Log-Message -file $logfile -Message "End Time: $(Get-Date)"
-Log-Message -file $logfile -Message "-----------------------------------------------------------"
+try {
+    Get-ItemProperty -Path $RegPath -Name "CloudKerberosTicketRetrievalEnabled" -ErrorAction Stop 
+    Log-Message -file $Logfile -Message "CloudKerberosTicketRetrievalEnabled is set to registry"
+    Log-Message -file $logfile -Message "-----------------------------------------------------------"
+    Log-Message -file $logfile -Message "Finished installation of $($ApplicationName)"
+    Log-Message -file $logfile -Message "End Time: $(Get-Date)"
+    Log-Message -file $logfile -Message "-----------------------------------------------------------"
+}
+catch {
+    $errormessage = $_
+    Log-message -file $Logfile -Message "CloudKerberosTicketRetrievalEnabled was not set"
+    Log-Message -file $Logfile -Message "$($errormessage.Exception.Message)"
+    Log-Message -file $logfile -Message "-----------------------------------------------------------"
+    Log-Message -file $logfile -Message "Failed installation of $($ApplicationName) with code: $($LastExitCode)"
+    Log-Message -file $logfile -Message "End Time: $(Get-Date)"
+    Log-Message -file $logfile -Message "-----------------------------------------------------------"
+    exit 1
+}
+
