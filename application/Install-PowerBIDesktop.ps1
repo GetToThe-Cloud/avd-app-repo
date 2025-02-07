@@ -1,7 +1,7 @@
 $ApplicationName = "Power BI Desktop"
 $Archive = "$($env:temp)\PBIDesktopSetup_x64.exe"
 $installDescription = "Installing the latest version of $($ApplicationName) $($Archive)"
-$DownloadURL = "https://download.microsoft.com/download/8/8/0/880BCA75-79DD-466A-927D-1ABF1F5454B0/PBIDesktopSetup_x64.exe"
+$DownloadURL = "https://download.microsoft.com/download/8/8/0/880BCA75-79DD-466A-927D-1ABF1F5454B0/PBIDesktopSetup_x64.exe" # nederlands
 
 ### Functions ####
 function Log-Message([String]$Message, [string]$file) {
